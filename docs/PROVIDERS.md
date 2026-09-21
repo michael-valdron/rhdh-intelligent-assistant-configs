@@ -16,7 +16,6 @@ Each inference has its own environment variables. You can include all of these i
 >
 > For GitOps/production, [scripts/generate-gitops-manifests.sh](../scripts/generate-gitops-manifests.sh) uncomments those three providers, then adds production `allowed_models` for `openai` and `vertexai`.
 >
-> Ollama is not a tracked stub — add it manually to `.local.yaml` using the Ollama section below.
 
 ## vLLM
 
@@ -37,28 +36,6 @@ inference:
 ```
 
 In order for `vLLM` to configure properly, you must include environment variables named `VLLM_API_KEY` and `VLLM_URL` to the Lightspeed Core container.
-
-## Ollama
-> [!NOTE]
-> Lightspeed Core does not implement the "official" Ollama provider via Llama stack (remote::ollama), instead we can access it via the vLLM provider.
->
-
-To add the `ollama` inference provider, paste the following into `lightspeed-core-configs/lightspeed-stack.local.yaml` (Ollama is not a tracked stub — add it manually):
-
-```yaml
-inference:
-  providers:
-    - type: vllm
-      id: <your-unique-id>
-      extra:
-        base_url: ${env.OLLAMA_URL:=http://localhost:11434/v1}
-```
-
-`OLLAMA_URL` guidance:
-
-- If Lightspeed Core runs directly on your host, use `http://localhost:11434/v1`.
-- If Lightspeed Core runs in a container, use `http://host.containers.internal:11434/v1`.
-- On Linux, you may need to open firewall access to the Podman network or run with `--network host`.
 
 ## OpenAI
 
@@ -129,7 +106,7 @@ If `allowed_models` is omitted, all models the provider can see are registered.
 
 ## Full Example
 
-The example below illustrates a local `lightspeed-stack.local.yaml` with providers uncommented. Ollama is optional and shown here for illustration only.
+The example below illustrates a local `lightspeed-stack.local.yaml` with providers uncommented.
 
 ```yaml
 name: lightspeed-core-stack
@@ -162,10 +139,6 @@ inference:
         network:
           tls:
             verify: ${env.VLLM_TLS_VERIFY:=true}
-    - type: vllm
-      id: ollama
-      extra:
-        base_url: ${env.OLLAMA_URL:=http://localhost:11434/v1}
 user_data_collection:
   feedback_enabled: true
   feedback_storage: '/tmp/data/feedback'

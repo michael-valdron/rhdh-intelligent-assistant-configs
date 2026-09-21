@@ -23,7 +23,7 @@
 
    To configure inference providers without editing the git-tracked `lightspeed-stack.yaml`, copy `lightspeed-core-configs/lightspeed-stack.yaml` to `lightspeed-core-configs/lightspeed-stack.local.yaml` and make your edits there. `make local-up` mounts the `.local.yaml` file automatically when it's present, otherwise it falls back to `lightspeed-stack.yaml`. `lightspeed-stack.local.yaml` is gitignored, so it's safe to leave provider config there permanently.
 
-   The tracked `lightspeed-stack.yaml` uses the `byo-llm` baseline and contains commented stubs for `vllm`, `openai`, and `vertexai` under `inference.providers`. Copy it to `lightspeed-stack.local.yaml` and uncomment the provider block(s) you need. Providers do not belong under `llama_stack.config.native_override`. For GitOps/production, [scripts/generate-gitops-manifests.sh](../scripts/generate-gitops-manifests.sh) uncomments those three providers and adds production `allowed_models`. Ollama (if needed) is added manually in `.local.yaml` — see [docs/PROVIDERS.md](./PROVIDERS.md).
+   The tracked `lightspeed-stack.yaml` uses the `byo-llm` baseline and contains commented stubs for `vllm`, `openai`, and `vertexai` under `inference.providers`. Copy it to `lightspeed-stack.local.yaml` and uncomment the provider block(s) you need. Providers do not belong under `llama_stack.config.native_override`. For GitOps/production, [scripts/generate-gitops-manifests.sh](../scripts/generate-gitops-manifests.sh) uncomments those three providers and adds production `allowed_models`.
 
 2. Pull the RAG content:
 
