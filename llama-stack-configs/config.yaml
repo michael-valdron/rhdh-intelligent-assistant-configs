@@ -45,8 +45,8 @@ providers:
     - provider_id: pypdf
       provider_type: inline::pypdf
       config:
-        default_chunk_size_tokens: 800
-        default_chunk_overlap_tokens: 400
+        default_chunk_size_tokens: 1200
+        default_chunk_overlap_tokens: 1
 storage:
   backends:
     kv_default:
