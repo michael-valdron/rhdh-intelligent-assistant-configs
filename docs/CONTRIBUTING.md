@@ -112,7 +112,7 @@ Paste that value into `byok_rag[].vector_db_id`. Keep `embedding_model` as the d
 >
 > Re-run this after every `make get-rag` until OKP is added.
 
-`notebooks` is separate: it is dynamic create capacity under `vector_store` (local FAISS; GitOps rewrites it to pgvector). It is not a second `byok_rag` corpus.
+`notebooks` is separate: it is dynamic create capacity under `vector_store` and uses FAISS in both local and GitOps configurations. It is not a second `byok_rag` corpus.
 
 If you use a gitignored `lightspeed-stack.local.yaml`, copy the same `byok_rag` / `rag` / `vector_store` / `shields` sections from the committed file when they change.
 

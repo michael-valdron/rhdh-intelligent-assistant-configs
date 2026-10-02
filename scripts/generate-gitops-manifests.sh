@@ -42,31 +42,6 @@ get_image() {
   ' "${REPO_ROOT}/images.yaml"
 }
 
-# Rewrite high-level vector_store.providers notebooks FAISS → pgvector for cluster.
-# Llama Stack HNSW/COSINE defaults match the former low-level rewrite (D6A).
-notebooks_vector_store_faiss_to_pgvector() {
-  awk '
-    /^    - id: notebooks$/ {
-      skip = 1
-      print "    - id: notebooks"
-      print "      type: pgvector"
-      print "      embedding_model: nomic-ai/nomic-embed-text-v1.5"
-      print "      embedding_dimension: 768"
-      print "      config:"
-      print "        host: ${env.PGVECTOR_HOST:=lightspeed-postgres-svc.lightspeed-postgres.svc.cluster.local}"
-      print "        port: \"5432\"  # TODO: fix lcore parsing and revert back to env"
-      print "        db: ${env.PGVECTOR_DB}"
-      print "        user: ${env.PGVECTOR_USER}"
-      print "        password: ${env.PGVECTOR_PASSWORD}"
-      next
-    }
-    skip && /^    - id:/ { skip = 0 }
-    skip && /^[a-zA-Z]/ { skip = 0 }
-    skip { next }
-    { print }
-  '
-}
-
 # Uncomment commented inference provider blocks whose id is vllm, openai, or vertexai.
 uncomment_inference_providers() {
   awk '
@@ -238,7 +213,6 @@ HEADER
   strip_license "${REPO_ROOT}/lightspeed-core-configs/lightspeed-stack.yaml" \
     | uncomment_inference_providers \
     | strip_comments \
-    | notebooks_vector_store_faiss_to_pgvector \
     | add_inference_allowed_models \
     | inject_byok_rag \
     | indent
